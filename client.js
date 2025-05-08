@@ -17,10 +17,18 @@ client.on('data', (data) => {
 client.on('end', () => {
   console.log('Disconnected from server');
   rl.close();
+  process.exit(0);
+});
+
+client.on('error', (err) => {
+  console.error('Connection error:', err.message);
+  rl.close();
+  process.exit(1);
 });
 
 rl.on('line', (input) => {
   if (input.trim().toLowerCase() === 'exit') {
+    console.log('Exiting chat...');
     client.end();
   } else {
     client.write(input);
